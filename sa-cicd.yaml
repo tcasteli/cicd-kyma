@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app1-cicd
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app1-cicd
+  annotations:
+    kubernetes.io/service-account.name: app1-cicd
+type: kubernetes.io/service-account-token
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: app1-cicd
+rules:
+  - apiGroups:
+      - ""
+      - extensions
+      - batch
+      - apps
+      - gateway.kyma-project.io
+      - servicecatalog.k8s.io
+      - services.cloud.sap.com
+    resources:
+      - deployments
+      - replicasets
+      - pods
+      - jobs
+      - configmaps
+      - apirules
+      - serviceinstances
+      - servicebindings
+      - services
+      - secrets
+    verbs:
+      - create
+      - update
+      - patch
+      - delete
+      - get
+      - list
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: app1-cicd-binding
+subjects:
+  - kind: ServiceAccount
+    name: app1-cicd
+    namespace: default
+roleRef:
+  kind: Role
+  name: app1-cicd
+  apiGroup: rbac.authorization.k8s.io

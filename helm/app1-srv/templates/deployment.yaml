@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.services.srv.name }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+    app: {{ .Values.services.srv.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.services.srv.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.services.srv.name }}
+    spec:
+      containers:
+        - image: "{{ .Values.dockerID }}/{{ .Values.services.srv.image.repository }}:{{ .Values.services.srv.image.tag }}"
+          name: {{ .Values.services.srv.name }}
+          imagePullPolicy: {{ .Values.services.srv.image.pullPolicy }}
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.srv.image.port }}
+          env:
+            - name: SERVICE_BINDING_ROOT
+              value: /bindings
+          volumeMounts:
+            - name: app1-uaa
+              mountPath: "/bindings/app1-uaa"
+              readOnly: true
+            - name: app1-dest
+              mountPath: "/bindings/app1-dest"
+              readOnly: true
+      volumes:
+        - name: app1-uaa
+          secret:
+            secretName: {{ .Values.services.uaa.bindingSecretName }}
+        - name: app1-dest
+          secret:
+            secretName: {{ .Values.services.dest.bindingSecretName }}

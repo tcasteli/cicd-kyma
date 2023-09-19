@@ -1,0 +1,26 @@
+dockerID: tcastelia
+clusterDomain: cf923be.kyma.ondemand.com
+gateway: kyma-gateway.kyma-system.svc.cluster.local
+services:
+  app:
+    name: app1-app
+  srv:
+    name: app1-srv
+    image:
+      repository: hanaacademyrepo
+      tag: "app1-srv"
+      pullPolicy: Always
+      port: 5001
+    service:
+      port: 5001
+  uaa:
+    name: app1-uaa
+    xsappname: app1
+    bindingName: app1-uaa-binding
+    bindingSecretName: app1-uaa-binding-secret
+  dest:
+    name: app1-dest
+    bindingName: app1-dest-binding
+    bindingSecretName: app1-dest-binding-secret
+    ApplicationInterfaceKey: <SetValue>
+    APIKey: <SetValue>

@@ -1,0 +1,15 @@
+{
+    "name": "app1-srv",
+    "dependencies": {
+        "express": "latest",
+        "@sap/xsenv": "latest"
+        ,"@sap/xssec": "latest"
+        ,"passport": "latest"
+        ,"@sap-cloud-sdk/connectivity": "latest"
+        ,"@sap-cloud-sdk/odata-v2": "latest"
+        ,"@sap/cloud-sdk-vdm-sales-order-service": "latest"
+    },
+    "scripts": {
+        "start": "node server.js"
+    }
+}
