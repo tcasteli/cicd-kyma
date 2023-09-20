@@ -50,7 +50,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: app1-cicd
-    namespace: default
+    namespace: dev
 roleRef:
   kind: Role
   name: app1-cicd
